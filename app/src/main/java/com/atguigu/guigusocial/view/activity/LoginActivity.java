@@ -8,7 +8,9 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.atguigu.guigusocial.R;
+import com.atguigu.guigusocial.bean.UserInfo;
 import com.atguigu.guigusocial.common.BaseActivity;
+import com.atguigu.guigusocial.model.Model;
 import com.atguigu.guigusocial.view.MainActivity;
 import com.hyphenate.EMCallBack;
 import com.hyphenate.chat.EMClient;
@@ -88,6 +90,13 @@ public class LoginActivity extends BaseActivity {
                     EMClient.getInstance().groupManager().loadAllGroups();
                     EMClient.getInstance().chatManager().loadAllConversations();
                     Log.d("main", "登录聊天服务器成功！");
+
+                    //登录成功后要保存数据
+                    String currentUser = EMClient.getInstance().getCurrentUser();
+                    /**
+                     * 环信的 用户名和 环信 id --hxId是一样的
+                     */
+                    Model.getInstance().successLogin(new UserInfo(currentUser,currentUser));
 
                     runOnUiThread(new Runnable() {
                         @Override

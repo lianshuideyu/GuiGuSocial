@@ -7,7 +7,10 @@
     tools:context="com.atguigu.guigusocial.view.MainActivity">
 
     <TextView
+        android:textColor="#000000"
+        android:id="@+id/tvtest"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="主页面" />
+        android:text="主页面"
+        android:textSize="30sp" />
 </RelativeLayout>

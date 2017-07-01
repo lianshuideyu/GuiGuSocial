@@ -2,6 +2,9 @@ package com.atguigu.guigusocial.model;
 
 import android.content.Context;
 
+import com.atguigu.guigusocial.bean.UserInfo;
+import com.atguigu.guigusocial.model.dao.AccountDAO;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -13,6 +16,7 @@ public class Model {
 
     private Context context;
 
+    private AccountDAO accountDAO;
     private Model(){
     }
 
@@ -29,6 +33,8 @@ public class Model {
      */
     public void init(Context context){
         this.context = context;
+        //创建AccountDao的实例，用于对数据的操作
+        accountDAO = new AccountDAO(context);
     }
 
     /**
@@ -37,9 +43,19 @@ public class Model {
     private  ExecutorService service = Executors.newCachedThreadPool();
 
     public ExecutorService getGlobalThread(){
-
         return service;
     }
 
+    /**
+     * 登录成功保存数据
+     * @param userInfo
+     */
+    public void successLogin(UserInfo userInfo){
+        accountDAO.addAccount(userInfo);
 
+    }
+
+    public AccountDAO getAccountDAO() {
+        return accountDAO;
+    }
 }
