@@ -1,18 +1,30 @@
 package com.atguigu.guigusocial.view;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-
 import com.atguigu.guigusocial.R;
-import com.hyphenate.chat.EMClient;
+import com.atguigu.guigusocial.common.BaseActivity;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity {
+
+
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+    public void initListener() {
 
-        EMClient.getInstance().getChatConfig();
     }
+
+    @Override
+    public void initData() {
+
+    }
+
+    @Override
+    public void initView() {
+
+    }
+
+    @Override
+    public int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
 }

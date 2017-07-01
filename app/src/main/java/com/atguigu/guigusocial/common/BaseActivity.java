@@ -4,6 +4,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import butterknife.ButterKnife;
+
 /**
  * Created by Administrator on 2017/7/1.
  */
@@ -15,6 +17,8 @@ public abstract class BaseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(getLayoutId());
+
+        ButterKnife.inject(this);
 
         initView();
 
@@ -35,4 +39,10 @@ public abstract class BaseActivity extends AppCompatActivity {
      */
     public abstract int getLayoutId() ;
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        ButterKnife.reset(this);
+    }
 }
