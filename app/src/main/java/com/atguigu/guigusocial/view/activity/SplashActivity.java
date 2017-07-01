@@ -5,6 +5,7 @@ import android.os.CountDownTimer;
 
 import com.atguigu.guigusocial.R;
 import com.atguigu.guigusocial.common.BaseActivity;
+import com.atguigu.guigusocial.model.Model;
 import com.atguigu.guigusocial.view.MainActivity;
 import com.hyphenate.chat.EMClient;
 
@@ -40,9 +41,9 @@ public class SplashActivity extends BaseActivity {
         /**
          * 检测是否登录过为耗时操作，在子线程执行
          */
-        new Thread(){
-            public void run(){
-
+        Model.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
                 boolean loggedInBefore = EMClient.getInstance().isLoggedInBefore();
 //                Log.e("TAG","run--" + loggedInBefore);
                 if(loggedInBefore) {//之前登录过直接到主页面
@@ -53,7 +54,7 @@ public class SplashActivity extends BaseActivity {
                     startActivity(intent);
                 }
             }
-        }.start();
+        });
     }
 
     @Override

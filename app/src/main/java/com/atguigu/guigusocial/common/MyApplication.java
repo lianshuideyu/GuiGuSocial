@@ -2,6 +2,7 @@ package com.atguigu.guigusocial.common;
 
 import android.app.Application;
 
+import com.atguigu.guigusocial.model.Model;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.chat.EMOptions;
 
@@ -24,5 +25,12 @@ public class MyApplication extends Application {
         EMClient.getInstance().init(this, options);
 //在做打包混淆时，关闭debug模式，避免消耗不必要的资源
         EMClient.getInstance().setDebugMode(true);
+
+        /**
+         * 初始化Model
+         *
+         */
+        Model.getInstance().init(this);
+
     }
 }
