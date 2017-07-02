@@ -129,7 +129,13 @@ public class LoginActivity extends BaseActivity {
         new Thread() {
             public void run() {
                 if (TextUtils.isEmpty(username) || TextUtils.isEmpty(userpsd)) {
-                    showToast("用户名和密码不能为空");
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            showToast("用户名和密码不能为空");
+                        }
+                    });
+
                 } else {
 
                     //注册失败会抛出HyphenateException

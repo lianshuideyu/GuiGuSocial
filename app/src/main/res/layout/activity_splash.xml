@@ -5,18 +5,19 @@
     android:layout_height="match_parent">
 
     <ImageView
+        android:scaleType="fitXY"
         android:id="@+id/iv_splash_logo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:layout_centerInParent="true"
-        android:src="@drawable/atguigu_logo" />
+        android:src="@drawable/wel2" />
 
     <TextView
+        android:textColor="#ffffff"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/iv_splash_logo"
         android:gravity="center"
-        android:text="欢迎来到尚硅谷"
+        android:text="约吗？"
         android:layout_marginTop="10dp"
         android:textSize="30sp" />
 </RelativeLayout>
