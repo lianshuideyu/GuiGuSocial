@@ -1,16 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.atguigu.guigusocial.view.MainActivity">
+    android:orientation="vertical">
 
-    <TextView
-        android:textColor="#000000"
-        android:id="@+id/tvtest"
-        android:layout_width="wrap_content"
+    <FrameLayout
+        android:id="@+id/fragment_main"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </FrameLayout>
+
+    <Button
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="主页面"
-        android:textSize="30sp" />
-</RelativeLayout>
+        android:onClick="outUser"
+        android:text="退出登录"
+        android:textSize="25dp" />
+
+    <RadioGroup
+        android:id="@+id/tab_group"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/conv_list_btn"
+            style="@style/tab_bottom_style"
+            android:drawableTop="@drawable/em_tab_chat_bg"
+            android:text="会话" />
+
+        <RadioButton
+            android:id="@+id/contact_list_btn"
+            style="@style/tab_bottom_style"
+            android:drawableTop="@drawable/em_tab_contact_list_bg"
+            android:text="联系人" />
+
+        <RadioButton
+            android:id="@+id/setting_btn"
+            style="@style/tab_bottom_style"
+            android:drawableTop="@drawable/em_tab_setting_bg"
+            android:text="设置" />
+    </RadioGroup>
+</LinearLayout>
+
+
