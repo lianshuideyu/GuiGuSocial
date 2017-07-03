@@ -18,7 +18,7 @@ import com.hyphenate.chat.EMClient;
 public class GlobalListener {
 
     /**
-     * 全局监听  在model中初始化
+     * 全局监听  在Model中初始化
      * @param context
      */
     public GlobalListener(Context context) {
