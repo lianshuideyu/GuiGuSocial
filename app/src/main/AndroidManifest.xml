@@ -61,7 +61,8 @@
         </receiver>
 
         <activity android:name=".view.MainActivity" />
-        <activity android:name=".view.activity.LoginActivity"></activity>
+        <activity android:name=".view.activity.LoginActivity" />
+        <activity android:name=".view.activity.AddContactActivity"></activity>
     </application>
 
 </manifest>

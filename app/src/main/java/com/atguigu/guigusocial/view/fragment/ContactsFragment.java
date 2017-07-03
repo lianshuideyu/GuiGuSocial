@@ -1,5 +1,6 @@
 package com.atguigu.guigusocial.view.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,6 +9,7 @@ import android.widget.LinearLayout;
 
 import com.atguigu.guigusocial.R;
 import com.atguigu.guigusocial.utils.UIUtils;
+import com.atguigu.guigusocial.view.activity.AddContactActivity;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 
 /**
@@ -41,6 +43,32 @@ public class ContactsFragment extends EaseContactListFragment {
     protected void setUpView() {
         super.setUpView();
 
+        /**
+         * 头部布局
+         */
+        initHeadView();
+
+        /**
+         * 标题栏
+         */
+        initTitleBar();
+    }
+
+    private void initTitleBar() {
+        titleBar.setRightLayoutVisibility(View.VISIBLE);
+
+        titleBar.setRightImageResource(R.drawable.ease_blue_add);
+        titleBar.setRightLayoutClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+//                UIUtils.showToast("添加好友");
+                Intent intent = new Intent(getActivity(), AddContactActivity.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+    private void initHeadView() {
         View view = View.inflate(getActivity(), R.layout.head_view,null);
 
         LinearLayout friends = (LinearLayout) view.findViewById(R.id.ll_new_friends);
@@ -54,7 +82,7 @@ public class ContactsFragment extends EaseContactListFragment {
         friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIUtils.showToast("加好友");
+                UIUtils.showToast("friends");
             }
         });
 
@@ -64,7 +92,7 @@ public class ContactsFragment extends EaseContactListFragment {
         groups.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIUtils.showToast("群组");
+                UIUtils.showToast("groups");
             }
         });
     }
