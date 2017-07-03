@@ -25,6 +25,10 @@ public class Model {
      * 全局监听
      */
     private GlobalListener globalListener;
+    /**
+     * 数据库管理 类
+     */
+    private HelperManager helperManager;
 
     private Model(){
     }
@@ -45,7 +49,11 @@ public class Model {
         //创建AccountDao的实例，用于对数据的操作
         accountDAO = new AccountDAO(context);
 
+        //初始化全局监听
         globalListener = new GlobalListener(context);
+
+
+
     }
 
     /**
@@ -64,8 +72,26 @@ public class Model {
     public void successLogin(UserInfo userInfo){
         accountDAO.addAccount(userInfo);
 
+        //初始化数据库管理
+        if(helperManager != null) {
+            helperManager.closeDB();
+        }
+        helperManager = new HelperManager(context, userInfo.getName());
+
     }
 
+    /**
+     * 返回 数据库的管理类
+     * @return
+     */
+    public HelperManager getHelperManager() {
+        return helperManager;
+    }
+
+    /**
+     * 返回用户信息的数据库
+     * @return
+     */
     public AccountDAO getAccountDAO() {
         return accountDAO;
     }
