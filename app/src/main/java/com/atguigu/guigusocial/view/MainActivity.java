@@ -1,20 +1,15 @@
 package com.atguigu.guigusocial.view;
 
-import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
-import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RadioGroup;
 
 import com.atguigu.guigusocial.R;
 import com.atguigu.guigusocial.common.BaseActivity;
-import com.atguigu.guigusocial.view.activity.LoginActivity;
 import com.atguigu.guigusocial.view.fragment.ChatFragment;
 import com.atguigu.guigusocial.view.fragment.ContactsFragment;
 import com.atguigu.guigusocial.view.fragment.SettingFragment;
-import com.hyphenate.EMCallBack;
-import com.hyphenate.chat.EMClient;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -143,43 +138,5 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
-    /**
-     * 暂时 用户退出登录，测试用
-     *
-     * @param v
-     */
-    public void outUser(View v) {
-//        EMClient.getInstance().logout(true);
 
-        EMClient.getInstance().logout(true, new EMCallBack() {
-
-            @Override
-            public void onSuccess() {
-                // TODO Auto-generated method stub
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast("退出登录");
-                    }
-                });
-
-                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(intent);
-                finish();
-            }
-
-            @Override
-            public void onProgress(int progress, String status) {
-                // TODO Auto-generated method stub
-
-            }
-
-            @Override
-            public void onError(int code, String message) {
-                // TODO Auto-generated method stub
-
-            }
-        });
-
-    }
 }

@@ -1,6 +1,8 @@
 package com.atguigu.guigusocial.common;
 
 import android.app.Application;
+import android.content.Context;
+import android.os.Handler;
 
 import com.atguigu.guigusocial.model.Model;
 import com.hyphenate.chat.EMClient;
@@ -11,6 +13,14 @@ import com.hyphenate.chat.EMOptions;
  */
 
 public class MyApplication extends Application {
+
+    private static Context context;
+
+    private static Handler handler;
+
+    private static int pid;
+
+
 
     @Override
     public void onCreate() {
@@ -32,5 +42,27 @@ public class MyApplication extends Application {
          */
         Model.getInstance().init(this);
 
+        context = this;
+
+        handler = new Handler();
+        //当前线程的  id
+        pid = android.os.Process.myPid();
+    }
+
+    /**
+     * 返回上下文
+     * @return
+     */
+    public static Context getContext(){
+
+        return context;
+    }
+
+    public static int getPid() {
+        return pid;
+    }
+
+    public static Handler getHandler() {
+        return handler;
     }
 }
