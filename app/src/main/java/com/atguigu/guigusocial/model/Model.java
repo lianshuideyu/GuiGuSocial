@@ -3,6 +3,7 @@ package com.atguigu.guigusocial.model;
 import android.content.Context;
 
 import com.atguigu.guigusocial.bean.UserInfo;
+import com.atguigu.guigusocial.common.GlobalListener;
 import com.atguigu.guigusocial.model.dao.AccountDAO;
 
 import java.util.concurrent.ExecutorService;
@@ -16,7 +17,15 @@ public class Model {
 
     private Context context;
 
+    /**
+     * 登录者 数据操作的实例
+     */
     private AccountDAO accountDAO;
+    /**
+     * 全局监听
+     */
+    private GlobalListener globalListener;
+
     private Model(){
     }
 
@@ -35,6 +44,8 @@ public class Model {
         this.context = context;
         //创建AccountDao的实例，用于对数据的操作
         accountDAO = new AccountDAO(context);
+
+        globalListener = new GlobalListener(context);
     }
 
     /**
