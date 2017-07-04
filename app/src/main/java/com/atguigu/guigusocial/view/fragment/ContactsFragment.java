@@ -1,7 +1,9 @@
 package com.atguigu.guigusocial.view.fragment;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
@@ -10,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.LinearLayout;
 
 import com.atguigu.guigusocial.R;
@@ -64,6 +67,9 @@ public class ContactsFragment extends EaseContactListFragment {
         }
     };
 
+    //联系人信息
+    private List<UserInfo> contacts;
+
     /**
      * 显示红点
      */
@@ -113,6 +119,76 @@ public class ContactsFragment extends EaseContactListFragment {
         Log.e("invite", "BroadcastReceiver=" + "注册联系人改变的广播");
         //显示联系人
         showContacts();
+
+        /**
+         * 长按删除联系人
+         */
+        listView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
+
+                UIUtils.showToast("" + position);
+                if (position == 0) {
+                    return false;
+                }
+                //确认是否删除
+                showDialog(position);
+
+                return true;//消费事件
+            }
+        });
+    }
+
+    /**
+     * 确认是否删除
+     *
+     * @param position
+     */
+    private void showDialog(final int position) {
+
+
+        new AlertDialog.Builder(getActivity())
+                .setTitle("确定删除？")
+                .setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        //从网络删除
+                        Model.getInstance().getGlobalThread().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                //从网络服务器删除
+                                if (contacts != null) {
+
+                                    try {//这里需要注意的是 因为listview的头文件 的position为0，所有listview的item的position从1开始
+                                        UserInfo userInfo = contacts.get(position-1);
+                                        EMClient.getInstance().contactManager().deleteContact(userInfo.getName());
+                                        UIUtils.showToast("删除成功");
+
+                                        //从本地删除全局监听已经做了操作
+                                        Model.getInstance().getHelperManager().getContactsDAO().deleteContact(userInfo.getName());
+                                    } catch (HyphenateException e) {
+                                        e.printStackTrace();
+                                        UIUtils.showToast(e.getMessage());
+                                    }
+                                }
+
+                                //从内存
+                                UIUtils.UIThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        refreshLocalData();
+                                    }
+                                });
+
+                            }
+                        });
+
+                    }
+                })
+                .setNegativeButton("取消", null)
+                .show();
+
     }
 
     /**
@@ -173,13 +249,13 @@ public class ContactsFragment extends EaseContactListFragment {
      */
     private void refreshLocalData() {
 
-        List<UserInfo> contacts = Model.getInstance().getHelperManager().getContactsDAO().getContacts();
-        if(contacts != null && contacts.size() > 0) {
+        contacts = Model.getInstance().getHelperManager().getContactsDAO().getContacts();
+        if (contacts != null ) {
 
             Map<String, EaseUser> contactsMap = new HashMap<>();
 
-            for (UserInfo info : contacts){
-                contactsMap.put(info.getName(),new EaseUser(info.getName()));
+            for (UserInfo info : contacts) {
+                contactsMap.put(info.getName(), new EaseUser(info.getName()));
 
             }
 
