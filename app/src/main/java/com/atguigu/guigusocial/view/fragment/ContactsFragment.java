@@ -13,12 +13,22 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.atguigu.guigusocial.R;
+import com.atguigu.guigusocial.bean.UserInfo;
 import com.atguigu.guigusocial.common.Constant;
+import com.atguigu.guigusocial.model.Model;
 import com.atguigu.guigusocial.utils.SpUtils;
 import com.atguigu.guigusocial.utils.UIUtils;
 import com.atguigu.guigusocial.view.activity.AddContactActivity;
 import com.atguigu.guigusocial.view.activity.InvitationActivity;
+import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
+import com.hyphenate.exceptions.HyphenateException;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Administrator on 2017/7/2.
@@ -31,15 +41,26 @@ public class ContactsFragment extends EaseContactListFragment {
      */
     private View iv_invite;
     /**
-     * 广播
+     * 接受消息改变的广播
      */
     private BroadcastReceiver myReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("invite","BroadcastReceiver");
+            Log.e("invite", "myReceiver");
             //接收到广播
             isShowRedView();
 
+        }
+    };
+    /**
+     * 接受联系人改变的广播
+     */
+    private BroadcastReceiver contactReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("invite", "contactReceiver");
+            //接收到广播后刷新显示
+            refreshLocalData();
         }
     };
 
@@ -84,8 +105,95 @@ public class ContactsFragment extends EaseContactListFragment {
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getActivity());
 
         IntentFilter filter = new IntentFilter(Constant.NEW_INVITE_CHANGE);
-        manager.registerReceiver(myReceiver,filter);
-        Log.e("invite","BroadcastReceiver=" + "注册广播");
+        manager.registerReceiver(myReceiver, filter);
+        Log.e("invite", "BroadcastReceiver=" + "注册广播");
+
+        //注册联系人改变的广播
+        manager.registerReceiver(contactReceiver, new IntentFilter(Constant.CONTACT_CHANGE));
+        Log.e("invite", "BroadcastReceiver=" + "注册联系人改变的广播");
+        //显示联系人
+        showContacts();
+    }
+
+    /**
+     * 显示联系人
+     */
+    private void showContacts() {
+
+        //判断是否为程序第一次进入，第一次联网获取联系人
+        //以后从本地获取联系人即可
+
+        refreshFromNet();
+    }
+
+    private void refreshFromNet() {
+
+        //从网络获取联系人信息
+        Model.getInstance().getGlobalThread().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    //从网络服务器获取所有联系人
+                    List<String> contacts = EMClient.getInstance().contactManager().getAllContactsFromServer();
+
+                    //保存到本地
+                    if (contacts != null && contacts.size() > 0) {
+
+                        List<UserInfo> userInfos = new ArrayList<UserInfo>();
+
+                        for (String name : contacts) {
+
+                            UserInfo userInfo = new UserInfo(name, name);
+                            userInfos.add(userInfo);
+
+                        }
+                        Model.getInstance().getHelperManager().getContactsDAO().saveMoreContact(userInfos, true);
+
+                        //从本地刷新 获取数据
+                        UIUtils.UIThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                refreshLocalData();
+                            }
+                        });
+                    }
+
+                } catch (HyphenateException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
+    }
+
+    /**
+     * 从本地获取联系人信息
+     */
+    private void refreshLocalData() {
+
+        List<UserInfo> contacts = Model.getInstance().getHelperManager().getContactsDAO().getContacts();
+        if(contacts != null && contacts.size() > 0) {
+
+            Map<String, EaseUser> contactsMap = new HashMap<>();
+
+            for (UserInfo info : contacts){
+                contactsMap.put(info.getName(),new EaseUser(info.getName()));
+
+            }
+
+            /**
+             * 调用环信的方法
+             */
+            setContactsMap(contactsMap);
+            //获取联系人列表
+            getContactList();
+            //刷新
+            contactListLayout.refresh();
+
+        }
+
     }
 
     private void initTitleBar() {
@@ -103,7 +211,7 @@ public class ContactsFragment extends EaseContactListFragment {
     }
 
     private void initHeadView() {
-        View view = View.inflate(getActivity(), R.layout.head_view,null);
+        View view = View.inflate(getActivity(), R.layout.head_view, null);
 
         LinearLayout friends = (LinearLayout) view.findViewById(R.id.ll_new_friends);
         LinearLayout groups = (LinearLayout) view.findViewById(R.id.ll_groups);
@@ -122,7 +230,7 @@ public class ContactsFragment extends EaseContactListFragment {
             @Override
             public void onClick(View view) {
 //                UIUtils.showToast("friends");
-                SpUtils.getInstance().saveSp(SpUtils.NEW_INVITE,false);//将小红点 状态改变
+                SpUtils.getInstance().saveSp(SpUtils.NEW_INVITE, false);//将小红点 状态改变
                 Intent intent = new Intent(getActivity(), InvitationActivity.class);
                 startActivity(intent);
 
@@ -144,7 +252,7 @@ public class ContactsFragment extends EaseContactListFragment {
     /**
      * 解注册广播
      */
-    public void unRegistBR(){
+    public void unRegistBR() {
 
         getActivity().unregisterReceiver(myReceiver);
     }

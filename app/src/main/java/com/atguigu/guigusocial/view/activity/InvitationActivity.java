@@ -59,7 +59,7 @@ public class InvitationActivity extends BaseActivity {
                             String name = info.getUserInfo().getName();
                             EMClient.getInstance().contactManager().acceptInvitation(name);
 //                            UIUtils.showToast("同意请求");
-                            //保存联系人
+                            //保存联系人，在全局监听的位置已经做了保存操作，这里不用再保存了
 //                            Model.getInstance().getHelperManager()
 //                                    .getContactsDAO()
 //                                    .saveContact(new UserInfo(name, name), true);
