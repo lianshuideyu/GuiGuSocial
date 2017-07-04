@@ -122,6 +122,7 @@ public class ContactsFragment extends EaseContactListFragment {
             @Override
             public void onClick(View view) {
 //                UIUtils.showToast("friends");
+                SpUtils.getInstance().saveSp(SpUtils.NEW_INVITE,false);//将小红点 状态改变
                 Intent intent = new Intent(getActivity(), InvitationActivity.class);
                 startActivity(intent);
 
@@ -146,5 +147,12 @@ public class ContactsFragment extends EaseContactListFragment {
     public void unRegistBR(){
 
         getActivity().unregisterReceiver(myReceiver);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        isShowRedView();//重新调用显示小红点的状态
     }
 }

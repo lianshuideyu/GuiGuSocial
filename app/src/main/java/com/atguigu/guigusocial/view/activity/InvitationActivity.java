@@ -53,14 +53,22 @@ public class InvitationActivity extends BaseActivity {
     };
 
 
-    /**
-     * 刷新数据
-     */
+    /*
+    界面数据展示需要考虑三大数据源
+
+    * 网络
+    * 本地
+    * 内存和页面
+    *
+    * */
     private void refreshData() {
         List<InvitationInfo> invitations =
                 Model.getInstance().getHelperManager().getInvitationDAO().getInvitations();
 
-        adapter.refresh(invitations);
+        if(invitations != null) {
+
+            adapter.refresh(invitations);
+        }
     }
 
     @Override
@@ -72,5 +80,6 @@ public class InvitationActivity extends BaseActivity {
     public int getLayoutId() {
         return R.layout.activity_invitation;
     }
+
 
 }
