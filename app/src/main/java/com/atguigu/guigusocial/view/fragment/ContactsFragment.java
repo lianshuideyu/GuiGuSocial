@@ -17,6 +17,7 @@ import com.atguigu.guigusocial.common.Constant;
 import com.atguigu.guigusocial.utils.SpUtils;
 import com.atguigu.guigusocial.utils.UIUtils;
 import com.atguigu.guigusocial.view.activity.AddContactActivity;
+import com.atguigu.guigusocial.view.activity.InvitationActivity;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 
 /**
@@ -81,6 +82,7 @@ public class ContactsFragment extends EaseContactListFragment {
          * 注册广播
          */
         LocalBroadcastManager manager = LocalBroadcastManager.getInstance(getActivity());
+
         IntentFilter filter = new IntentFilter(Constant.NEW_INVITE_CHANGE);
         manager.registerReceiver(myReceiver,filter);
         Log.e("invite","BroadcastReceiver=" + "注册广播");
@@ -114,11 +116,15 @@ public class ContactsFragment extends EaseContactListFragment {
         iv_invite = view.findViewById(R.id.iv_invite);
         /**
          * 加好友的点击事件
+         * 注意一点：当在分线程 getActivity（）是需要先对 其反回值判空
          */
         friends.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                UIUtils.showToast("friends");
+//                UIUtils.showToast("friends");
+                Intent intent = new Intent(getActivity(), InvitationActivity.class);
+                startActivity(intent);
+
             }
         });
 

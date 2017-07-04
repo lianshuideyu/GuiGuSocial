@@ -62,7 +62,8 @@
 
         <activity android:name=".view.MainActivity" />
         <activity android:name=".view.activity.LoginActivity" />
-        <activity android:name=".view.activity.AddContactActivity"></activity>
+        <activity android:name=".view.activity.AddContactActivity" />
+        <activity android:name=".view.activity.InvitationActivity"></activity>
     </application>
 
 </manifest>
