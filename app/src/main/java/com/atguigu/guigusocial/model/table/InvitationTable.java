@@ -17,7 +17,7 @@ public class InvitationTable {
             + COL_HXID + " text primary key,"
             + COL_USERNAME + " text,"
             + COL_REASON + " text,"
-            + COL_STATE + " integer"
+            + COL_STATE + " integer)"
             ;
 
 }

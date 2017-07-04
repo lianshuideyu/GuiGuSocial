@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.CountDownTimer;
 
 import com.atguigu.guigusocial.R;
+import com.atguigu.guigusocial.bean.UserInfo;
 import com.atguigu.guigusocial.common.BaseActivity;
 import com.atguigu.guigusocial.model.Model;
 import com.atguigu.guigusocial.view.MainActivity;
@@ -47,6 +48,8 @@ public class SplashActivity extends BaseActivity {
                 boolean loggedInBefore = EMClient.getInstance().isLoggedInBefore();
 //                Log.e("TAG","run--" + loggedInBefore);
                 if(loggedInBefore) {//之前登录过直接到主页面
+                    String user = EMClient.getInstance().getCurrentUser();
+                    Model.getInstance().successLogin(new UserInfo(user,user));
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                 }else {//没有登录过到登录页面

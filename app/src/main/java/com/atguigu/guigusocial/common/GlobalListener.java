@@ -109,6 +109,7 @@ public class GlobalListener {
             //发送广播,消息改变
             localBroadcastManager.sendBroadcast(new Intent(Constant.NEW_INVITE_CHANGE));
 
+            Log.e("GlobalListener", "onContactInvited==发送广播" );
         }
 
         @Override

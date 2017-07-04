@@ -25,6 +25,6 @@ public class ContactsTable {
             + COL_USERNAME + " text,"
             + COL_PHOTO + " text,"
             + COL_NICK + " text,"
-            + COL_IS_CONTACTS + " integer"
+            + COL_IS_CONTACTS + " integer)"
             ;
 }

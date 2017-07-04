@@ -54,7 +54,6 @@ public class Model {
         globalListener = new GlobalListener(context);
 
 
-
     }
 
     /**
@@ -77,6 +76,9 @@ public class Model {
         if(helperManager != null) {
             helperManager.closeDB();
         }
+        /*
+        初始化数据库管理,登录成功后和 广告界面跳转至主页面处初始化
+         */
         helperManager = new HelperManager(context, userInfo.getName());
 
         //初始化sp
