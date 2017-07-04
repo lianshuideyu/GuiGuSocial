@@ -5,6 +5,7 @@ import android.content.Context;
 import com.atguigu.guigusocial.bean.UserInfo;
 import com.atguigu.guigusocial.common.GlobalListener;
 import com.atguigu.guigusocial.model.dao.AccountDAO;
+import com.atguigu.guigusocial.utils.SpUtils;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -78,6 +79,8 @@ public class Model {
         }
         helperManager = new HelperManager(context, userInfo.getName());
 
+        //初始化sp
+        SpUtils.getInstance().init(context,userInfo.getName());
     }
 
     /**
