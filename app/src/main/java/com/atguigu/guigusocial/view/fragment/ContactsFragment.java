@@ -22,8 +22,10 @@ import com.atguigu.guigusocial.model.Model;
 import com.atguigu.guigusocial.utils.SpUtils;
 import com.atguigu.guigusocial.utils.UIUtils;
 import com.atguigu.guigusocial.view.activity.AddContactActivity;
+import com.atguigu.guigusocial.view.activity.ChatActivity;
 import com.atguigu.guigusocial.view.activity.InvitationActivity;
 import com.hyphenate.chat.EMClient;
+import com.hyphenate.easeui.EaseConstant;
 import com.hyphenate.easeui.domain.EaseUser;
 import com.hyphenate.easeui.ui.EaseContactListFragment;
 import com.hyphenate.exceptions.HyphenateException;
@@ -87,6 +89,21 @@ public class ContactsFragment extends EaseContactListFragment {
     @Override
     protected void initView() {
         super.initView();
+        /**
+         * 点击事件
+         * 这里需要注意的是 此点击事件的方法要写在 initView()里边
+         * 不要写在setUpView()里边，看环信源码会发现，写在setUpView（）里边 会空...从而不会执行点击事件方法
+         */
+        setContactListItemClickListener(new EaseContactListItemClickListener() {
+            @Override
+            public void onListItemClicked(EaseUser user) {
+
+//                UIUtils.showToast("" + position);//position记得－1
+                Intent intent = new Intent(getActivity(), ChatActivity.class);
+                intent.putExtra(EaseConstant.EXTRA_USER_ID, user.getUsername());
+                startActivity(intent);
+            }
+        });
     }
 
     @Override
@@ -127,7 +144,7 @@ public class ContactsFragment extends EaseContactListFragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                UIUtils.showToast("" + position);
+//                UIUtils.showToast("" + position);
                 if (position == 0) {
                     return false;
                 }
@@ -137,6 +154,7 @@ public class ContactsFragment extends EaseContactListFragment {
                 return true;//消费事件
             }
         });
+
     }
 
     /**
